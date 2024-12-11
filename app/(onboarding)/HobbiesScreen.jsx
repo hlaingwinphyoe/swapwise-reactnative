@@ -91,11 +91,10 @@ const HobbiesScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTextLeft}>SwapWise</Text>
-      </View>
+      {/* Title */}
       <Text style={styles.title}>What are your hobbies and interests?</Text>
+
+      {/* Hobbies Categories */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {Object.keys(groupedHobbies).map((category) => (
           <View key={category} style={styles.categoryContainer}>
@@ -123,19 +122,68 @@ const HobbiesScreen = () => {
             </View>
           </View>
         ))}
+    {/* Back and Next Buttons */}
+          <View style={styles.buttonContainer}>
+            {/* Back Button */}
+            <TouchableOpacity
+              style={[styles.sharedButton, styles.backButton]}
+              onPress={() => router.back()} // Navigate back to the previous screen
+            >
+              <Text style={styles.sharedButtonText}>&lt; Back</Text>
+            </TouchableOpacity>
+
+            {/* Next Button */}
+            <TouchableOpacity
+              style={[styles.sharedButton, styles.nextButton]}
+              onPress={handleNext}
+            >
+              <Text style={styles.sharedButtonText}>Next &gt;</Text>
+            </TouchableOpacity>
+          </View>
       </ScrollView>
-      <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-        <Text style={styles.nextButtonText}>Next &gt;</Text>
-      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: "#fff" },
-  header: { width: "100%", padding: 16, alignItems: "flex-start" },
-  headerTextLeft: { fontSize: 24, fontWeight: "bold", color: "#3b3b98" },
-  title: { fontSize: 18, fontWeight: "600", marginVertical: 16, textAlign: "center" },
+
+  // Button container for aligning Back and Next buttons
+  buttonContainer: {
+    flexDirection: "row", // Place buttons in a row
+    justifyContent: "space-between", // Space out buttons
+    marginTop: 16,
+  },
+
+  // Shared button styling for both Back and Next
+  sharedButton: {
+    backgroundColor: "#3b3b98",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 30, // Rounded corners
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 3, // Add shadow effect for better UI
+  },
+
+  sharedButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginHorizontal: 10,
+  },
+
+  // Title styling
+  title: {
+    fontSize: 25, // Adjust font size if necessary
+    fontWeight: "600",
+    marginBottom: 16,
+    color: "#000", // Black color for title
+    textAlign: "center", // Align to the left
+    width: "100%", // Full width
+  },
+
   scrollContainer: { paddingBottom: 20 },
   categoryContainer: {
     marginBottom: 16,
@@ -161,8 +209,7 @@ const styles = StyleSheet.create({
   selectedHobby: { backgroundColor: "#3b3b98", borderColor: "#3b3b98" },
   hobbyText: { fontSize: 14, color: "#000" },
   selectedHobbyText: { color: "#fff" },
-  nextButton: { marginTop: 16, backgroundColor: "#3b3b98", padding: 10, borderRadius: 20 },
-  nextButtonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
+
   loadingText: { fontSize: 16, marginTop: 10, color: "#3b3b98" },
 });
 

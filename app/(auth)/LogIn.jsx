@@ -18,7 +18,7 @@ export default function LogInPage() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert("Success", "Logged in successfully!");
-      router.push("/(onboarding)/LearnScreen"); // Navigate to LearnScreen
+      router.push("/(onboarding)/ProfileSetup"); // Navigate to LearnScreen
     } catch (error) {
       Alert.alert("Error", error.message);
     }

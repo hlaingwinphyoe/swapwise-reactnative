@@ -8,7 +8,7 @@ export default function Layout() {
   const segments = useSegments();
 
   // Function to determine the active tab for styling
-  const isActive = (route) => segments.includes(route);
+  const isActive = (route) => segments[1] === route;
 
   return (
     <View style={styles.container}>
@@ -26,9 +26,9 @@ export default function Layout() {
           <Ionicons
             name="home-outline"
             size={24}
-            color={isActive("home") ? "#1E1E84" : "#888"}
+            color={isActive("Home") ? "#1E1E84" : "#888"}
           />
-          <Text style={[styles.tabText, isActive("home") && styles.activeTab]}>
+          <Text style={[styles.tabText, isActive("Home") && styles.activeTab]}>
             Home
           </Text>
         </TouchableOpacity>
@@ -40,10 +40,10 @@ export default function Layout() {
           <Entypo
             name="calendar"
             size={24}
-            color={isActive("calendar") ? "#1E1E84" : "#888"}
+            color={isActive("Calendar") ? "#1E1E84" : "#888"}
           />
           <Text
-            style={[styles.tabText, isActive("calendar") && styles.activeTab]}
+            style={[styles.tabText, isActive("Calendar") && styles.activeTab]}
           >
             Calendar
           </Text>
@@ -56,9 +56,14 @@ export default function Layout() {
           <FontAwesome
             name="comments-o"
             size={24}
-            color={isActive("chat") ? "#1E1E84" : "#888"}
+            color={isActive("ContactList") ? "#1E1E84" : "#888"}
           />
-          <Text style={[styles.tabText, isActive("contactList") && styles.activeTab]}>
+          <Text
+            style={[
+              styles.tabText,
+              isActive("ContactList") && styles.activeTab,
+            ]}
+          >
             Messages
           </Text>
         </TouchableOpacity>
@@ -70,10 +75,10 @@ export default function Layout() {
           <Ionicons
             name="person-outline"
             size={24}
-            color={isActive("profile") ? "#1E1E84" : "#888"}
+            color={isActive("Profile") ? "#1E1E84" : "#888"}
           />
           <Text
-            style={[styles.tabText, isActive("profile") && styles.activeTab]}
+            style={[styles.tabText, isActive("Profile") && styles.activeTab]}
           >
             Profile
           </Text>

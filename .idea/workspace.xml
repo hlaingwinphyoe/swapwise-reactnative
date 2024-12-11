@@ -15,13 +15,15 @@
       <change afterPath="$PROJECT_DIR$/app/(tabs)/ChatRoom.jsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/(tabs)/ContactList.jsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/(tabs)/Home.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(tabs)/Profile.jsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/(tabs)/_layout.jsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/_layout.jsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/default-profile.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/assets/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
@@ -52,12 +54,16 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/HP/Desktop/SwapWise"
+    "last_opened_file_path": "C:/Users/HP/Documents/SwapWise/assets"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\HP\Documents\SwapWise\assets" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\HP\Documents\SwapWise\assets" />
       <recent name="C:\Users\HP\Documents\SwapWise" />
