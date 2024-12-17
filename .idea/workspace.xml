@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5d7bb9d0-aa60-4e27-9b06-a6e22b45eabe" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/(auth)/LogIn.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(auth)/SignUp.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(auth)/WelcomeScreen.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(auth)/_layout.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(onboarding)/HobbiesScreen.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(onboarding)/ProfileSetup.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(onboarding)/TeachScreen.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(tabs)/ChatRoom.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(tabs)/ContactList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(tabs)/Home.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(tabs)/Profile.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/(tabs)/_layout.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/_layout.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/default-profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2pATyaIDxbaaI54TSZt492ePX5O" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/HP/Documents/SwapWise/assets"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\HP\Documents\SwapWise\assets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\HP\Documents\SwapWise\assets" />
+      <recent name="C:\Users\HP\Documents\SwapWise" />
+      <recent name="C:\Users\HP\Documents\SwapWise\app" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5d7bb9d0-aa60-4e27-9b06-a6e22b45eabe" name="Changes" comment="" />
+      <created>1732208137270</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1732208137270</updated>
+    </task>
+    <servers />
+  </component>
+</project>
