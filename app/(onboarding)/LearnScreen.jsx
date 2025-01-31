@@ -10,7 +10,13 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, updateDoc, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  updateDoc,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 
 // Firebase initialization
 import { app } from "../../firebaseConfig";
@@ -30,8 +36,8 @@ const LearnScreen = () => {
         const lessonsCollection = collection(db, "lessons");
         const lessonsSnapshot = await getDocs(lessonsCollection);
         const lessonsData = lessonsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+          category: doc.id,
+          names: doc.data().names,
         }));
         setLessons(lessonsData);
         setLoading(false);
@@ -70,16 +76,7 @@ const LearnScreen = () => {
     }
   };
 
-  // Group lessons by category
-  const groupedLessons = lessons.reduce((groups, lesson) => {
-    const category = lesson.category || "Uncategorized";
-    if (!groups[category]) {
-      groups[category] = [];
-    }
-    groups[category].push(lesson);
-    return groups;
-  }, {});
-
+  // Group lessons by category (already grouped in Firestore)
   if (loading) {
     return (
       <View style={styles.container}>
@@ -96,41 +93,42 @@ const LearnScreen = () => {
 
       {/* Lesson Categories */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {Object.keys(groupedLessons).map((category) => (
-          <View key={category} style={styles.categoryContainer}>
-            <Text style={styles.categoryTitle}>{category}</Text>
+        {lessons.map((lesson) => (
+          <View key={lesson.category} style={styles.categoryContainer}>
+            <Text style={styles.categoryTitle}>{lesson.category}</Text>
             <View style={styles.lessonGroup}>
-              {groupedLessons[category].map((lesson) => (
+              {lesson.names.map((name, index) => (
                 <TouchableOpacity
-                  key={lesson.id}
+                  key={index}
                   style={[
                     styles.lessonButton,
-                    selectedLessons.includes(lesson.name) && styles.selectedLesson,
+                    selectedLessons.includes(name) && styles.selectedLesson,
                   ]}
-                  onPress={() => toggleLesson(lesson.name)}
+                  onPress={() => toggleLesson(name)}
                 >
                   <Text
                     style={[
                       styles.lessonText,
-                      selectedLessons.includes(lesson.name) && styles.selectedLessonText,
+                      selectedLessons.includes(name) &&
+                        styles.selectedLessonText,
                     ]}
                   >
-                    {lesson.name || "Unnamed Lesson"}
+                    {name}
                   </Text>
                 </TouchableOpacity>
               ))}
             </View>
           </View>
         ))}
-          {/* Next Button */}
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[styles.sharedButton, styles.nextButton]}
-              onPress={handleNext}
-            >
-              <Text style={styles.sharedButtonText}>Next &gt;</Text>
-            </TouchableOpacity>
-          </View>
+        {/* Next Button */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[styles.sharedButton, styles.nextButton]}
+            onPress={handleNext}
+          >
+            <Text style={styles.sharedButtonText}>Next &gt;</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -189,8 +187,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e0e0e0",
   },
-  categoryTitle: { fontSize: 16, fontWeight: "bold", marginBottom: 10, color: "#3b3b98" },
-  lessonGroup: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 8 },
+  categoryTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#3b3b98",
+  },
+  lessonGroup: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 8,
+  },
   lessonButton: {
     paddingVertical: 8,
     paddingHorizontal: 16,
