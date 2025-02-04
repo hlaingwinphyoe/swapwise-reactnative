@@ -23,14 +23,15 @@ export default function WelcomeScreen() {
           Discover Endless Possibilities with SwapWise
         </Text>
         <Text style={styles.description}>
-          Where Creativity Meets Innovation: Embark on a Journey of Limitless Exploration.
+          Where Creativity Meets Innovation: Embark on a Journey of Limitless
+          Exploration.
         </Text>
       </View>
 
       {/* Buttons */}
       <TouchableOpacity
         style={styles.emailButton}
-        onPress={() => router.push("/(auth)/SignUp")}
+        onPress={() => router.push("/(auth)/LogIn")}
       >
         <Text style={styles.emailButtonText}>Continue with Email</Text>
       </TouchableOpacity>
@@ -38,10 +39,10 @@ export default function WelcomeScreen() {
       {/* Social Icons */}
       <View style={styles.socialIcons}>
         <TouchableOpacity style={styles.iconButton}>
-          <FontAwesome name="google" size={24} color="#FFFFFF" />
+          <FontAwesome name="google" size={24} color="#1e1e84" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconButton}>
-          <FontAwesome name="apple" size={24} color="#FFFFFF" />
+          <FontAwesome name="apple" size={24} color="#1e1e84" />
         </TouchableOpacity>
       </View>
     </View>
@@ -108,7 +109,9 @@ const styles = StyleSheet.create({
   iconButton: {
     width: 50,
     height: 50,
-    backgroundColor: "#CDCDE0",
+    backgroundColor: "#fff",
+    borderColor: "#1e1e84",
+    borderWidth: 1,
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",

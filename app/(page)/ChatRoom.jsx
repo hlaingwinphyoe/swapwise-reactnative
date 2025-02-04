@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
-  FlatList,
   TextInput,
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Keyboard,
+  ActivityIndicator,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import {
-  getFirestore,
   collection,
   query,
   where,
@@ -20,8 +20,12 @@ import {
   addDoc,
   Timestamp,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import { app } from "../../firebaseConfig";
+import { db } from "../../firebaseConfig";
+import { getRoomId } from "@/utils/common";
+import { useAuth } from "@/context/authContext";
+import CustomKeyboardView from "@/components/CustomKeyboardView";
+import MessageList from "@/components/MessageList";
+import ChatRoomHeader from "@/components/ChatRoomHeader";
 
 export default function ChatRoom() {
   const navigation = useNavigation();
@@ -31,13 +35,13 @@ export default function ChatRoom() {
   const [userName, setUserName] = useState(routeUserName);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const currentUserId = auth.currentUser?.uid;
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+  const currentUserId = user?.uid;
+  const scrollViewRef = useRef();
 
   // Generate chat ID
-  const chatId = [currentUserId, userId].sort().join('_');
+  const chatId = getRoomId(currentUserId, userId);
 
   useEffect(() => {
     if (!routeUserId || !routeUserName) {
@@ -58,7 +62,7 @@ export default function ChatRoom() {
   // Fetch messages
   useEffect(() => {
     if (!userId || !currentUserId) return; // Prevent fetching if userId is missing
-
+    setLoading(true);
     const fetchMessages = async () => {
       try {
         const chatQuery = query(
@@ -74,8 +78,10 @@ export default function ChatRoom() {
         }));
 
         setMessages(fetchedMessages);
+        setLoading(false);
         console.log("Fetched messages:", fetchedMessages); // Debugging
       } catch (error) {
+        setLoading(false);
         console.error("Error fetching messages:", error.message);
       }
     };
@@ -125,86 +131,78 @@ export default function ChatRoom() {
     }
   };
 
+  useEffect(() => {
+    updateScrollView();
+  }, [messages]);
+
+  useEffect(() => {
+    const KeyboardDidShowListner = Keyboard.addListener(
+      "keyboardDidShow",
+      updateScrollView
+    );
+
+    return KeyboardDidShowListner.remove();
+  }, []);
+
+  const updateScrollView = () => {
+    setTimeout(() => {
+      scrollViewRef?.current?.scrollToEnd({ animated: true });
+    }, 100);
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.header}>Chat with {userName || "Loading..."}</Text>
-      </View>
+    <CustomKeyboardView inChat={true}>
+      <View className="flex-1 bg-white">
+        <ChatRoomHeader userName={userName} navigation={navigation} />
 
-      <FlatList
-        data={messages}
-        keyExtractor={(item) => item.id} // Ensure each key is unique
-        renderItem={({ item }) => (
-          <View
-            style={[
-              styles.messageContainer,
-              item.sender === currentUserId
-                ? styles.myMessage
-                : styles.otherMessage,
-            ]}
-          >
-            <Text style={styles.messageText}>{item.text}</Text>
+        <View className="flex-1 justify-between bg-white px-5 overflow-visible">
+          <View className="">
+            {loading ? (
+              <ActivityIndicator color="#0000ff" size="large" className="top-10" />
+            ) : (
+              <MessageList
+                scrollViewRef={scrollViewRef}
+                messages={messages}
+                currentUserId={currentUserId}
+              />
+            )}
           </View>
-        )}
-      />
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Type a message..."
-          value={newMessage}
-          onChangeText={setNewMessage}
-        />
-
-        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-          <Text style={styles.sendButtonText}>Send</Text>
-        </TouchableOpacity>
+          <View className="pt-2 mb-5">
+            <View className="flex-row justify-between bg-white border p-1.5 border-neutral-300 rounded-full pl-5">
+              <TextInput
+                value={newMessage}
+                onChangeText={(text) => setNewMessage(text)}
+                placeholder="Type Message"
+                placeholderTextColor="#737373"
+                className="flex-1 mr-2"
+                style={{ fontSize: 16 }}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  handleSend();
+                  Keyboard.dismiss();
+                }}
+                disabled={loading ? true : false}
+                className="flex-row items-center gap-1 bg-primary-500 py-2.5 px-4 mr-px rounded-full"
+              >
+                <Text className="text-white">Send</Text>
+                <Feather name="send" size={16} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </View>
-    </View>
+    </CustomKeyboardView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: "#FFFFFF",
-  },
-  headerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
   header: {
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
     color: "#1E1E84",
-    marginLeft: 10, // Adjust this value as needed
   },
-  messageContainer: {
-    padding: 10,
-    borderRadius: 10,
-    marginVertical: 5,
-    maxWidth: "75%",
-  },
-  myMessage: {
-    alignSelf: "flex-end",
-    backgroundColor: "#1E1E84",
-  },
-  otherMessage: {
-    alignSelf: "flex-start",
-    backgroundColor: "#e65f17",
-  },
-  messageText: {
-    color: "#FFFFFF",
-  },
-  otherMessageText: { color: "#000000",
-      },
-
 
   inputContainer: {
     flexDirection: "row",
