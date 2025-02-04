@@ -1,0 +1,117 @@
+{
+  "provinces": [
+    {
+      "name": "Bangkok",
+      "districts": [
+        "Phra Nakhon",
+        "Dusit",
+        "Nong Chok",
+        "Lat Krabang",
+        "Bang Khen",
+        "Bang Kapi",
+        "Pathum Wan",
+        "Pom Prap Sattru Phai",
+        "Phra Khanong",
+        "Min Buri",
+        "Lat Phrao"
+      ]
+    },
+    {
+      "name": "Chiang Mai",
+      "districts": [
+        "Mueang Chiang Mai",
+        "Chom Thong",
+        "Mae Chaem",
+        "Chiang Dao",
+        "Doi Saket",
+        "Mae Taeng",
+        "San Sai",
+        "Hang Dong",
+        "San Kamphaeng",
+        "Mae Rim"
+      ]
+    },
+    {
+      "name": "Phuket",
+      "districts": [
+        "Mueang Phuket",
+        "Kathu",
+        "Thalang"
+      ]
+    },
+    {
+      "name": "Chonburi",
+      "districts": [
+        "Mueang Chonburi",
+        "Ban Bueng",
+        "Bang Lamung",
+        "Pattaya",
+        "Phanat Nikhom",
+        "Sriracha",
+        "Sattahip"
+      ]
+    },
+    {
+      "name": "Khon Kaen",
+      "districts": [
+        "Mueang Khon Kaen",
+        "Chum Phae",
+        "Ban Phai",
+        "Nong Song Hong",
+        "Phon",
+        "Kranuan"
+      ]
+    },
+    {
+      "name": "Nakhon Ratchasima",
+      "districts": [
+        "Mueang Nakhon Ratchasima",
+        "Pak Chong",
+        "Phimai",
+        "Chok Chai",
+        "Sung Noen",
+        "Dan Khun Thot"
+      ]
+    },
+    {
+      "name": "Udon Thani",
+      "districts": [
+        "Mueang Udon Thani",
+        "Nong Han",
+        "Kumphawapi",
+        "Ban Phue",
+        "Phen",
+        "Na Yung"
+      ]
+    },
+    {
+      "name": "Rayong",
+      "districts": [
+        "Mueang Rayong",
+        "Ban Chang",
+        "Klaeng",
+        "Pluak Daeng"
+      ]
+    },
+    {
+      "name": "Ayutthaya",
+      "districts": [
+        "Phra Nakhon Si Ayutthaya",
+        "Bang Pa-in",
+        "Bang Sai",
+        "Wang Noi"
+      ]
+    },
+    {
+      "name": "Surat Thani",
+      "districts": [
+        "Mueang Surat Thani",
+        "Koh Samui",
+        "Koh Phangan",
+        "Don Sak",
+        "Chaiya",
+        "Ban Ta Khun"
+      ]
+    }
+  ]
+}

@@ -2,6 +2,8 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useRouter, Slot, useSegments } from "expo-router";
 import { FontAwesome, Entypo, Ionicons } from "@expo/vector-icons";
+import HomeHeader from "@/components/HomeHeader";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Layout() {
   const router = useRouter();
@@ -13,10 +15,14 @@ export default function Layout() {
   return (
     <View style={styles.container}>
       {/* Main Content */}
-      <View style={styles.content}>
-        <Slot />
-      </View>
-
+      <SafeAreaView className="flex-1 bg-white">
+        {/* header */}
+        <HomeHeader />
+        {/* Content  */}
+        <View style={styles.content}>
+          <Slot />
+        </View>
+      </SafeAreaView>
       {/* Custom Tab Bar */}
       <View style={styles.tabBar}>
         <TouchableOpacity

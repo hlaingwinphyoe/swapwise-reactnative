@@ -11,7 +11,9 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
+import { getAuth } from "firebase/auth";
 import {
+  getFirestore,
   collection as firestoreCollection,
   getDocs,
   doc,
@@ -26,13 +28,13 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
-import { db, storage } from "../../firebaseConfig";
+import { app, storage } from "../../firebaseConfig";
 import { Picker } from "@react-native-picker/picker";
-import { useAuth } from "@/context/authContext";
 
 const ProfileSetup = () => {
   const router = useRouter();
-  const { user } = useAuth();
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -161,6 +163,7 @@ const ProfileSetup = () => {
 
     setError("");
     try {
+      const user = auth.currentUser;
       if (!user) {
         Alert.alert("Error", "User not authenticated.");
         return;
@@ -169,7 +172,7 @@ const ProfileSetup = () => {
       const imageUrl = image ? await uploadImage(user, image) : null;
       console.log(imageUrl);
 
-      const userRef = doc(db, "users", user?.uid);
+      const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, {
         username,
         gender,
@@ -328,12 +331,7 @@ const ProfileSetup = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-    paddingTop: 45,
-  },
+  container: { flexGrow: 1, padding: 16, backgroundColor: "#fff" },
   title: {
     fontSize: 20,
     fontWeight: "600",
@@ -341,13 +339,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   profileImageContainer: { alignItems: "center", marginBottom: 16 },
-  profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 1,
-    padding: 5,
-  },
+  profileImage: { width: 120, height: 120, borderRadius: 60 },
   cameraIconContainer: { position: "absolute", bottom: 0, right: 0 },
   inputGroup: { marginBottom: 16 },
   label: { fontSize: 16, marginBottom: 8 },

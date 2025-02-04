@@ -135,7 +135,7 @@ const LearnScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
+  container: { flex: 1, padding: 16, backgroundColor: "#fff", paddingTop: 45 },
   header: { width: "100%", padding: 16, alignItems: "flex-start" },
 
   // Button container

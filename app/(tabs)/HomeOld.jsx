@@ -15,7 +15,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  limit,
   query,
   Timestamp,
   where,
@@ -31,9 +30,8 @@ export default function Home() {
   const [recommendedUsers, setRecommendedUsers] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [remainingSwipes, setRemainingSwipes] = useState(
-    recommendedUsers.length
-  );
+  const [swipedUsers, setSwipedUsers] = useState(new Set());
+  const currentUserId = user?.uid;
 
   useEffect(() => {
     if (user) {
@@ -44,55 +42,39 @@ export default function Home() {
     }
   }, []);
 
-  const fetchRecommendedUsers = async (uid, fetchMore = false) => {
+  const fetchRecommendedUsers = async (uid) => {
     try {
-      setLoading(true);
       const usersCollection = collection(db, "users");
+      const querySnapshot = await getDocs(usersCollection);
 
-      // Fetch already swiped users
-      const swipedQuery = query(
-        collection(db, "likes"),
-        where("fromUserId", "==", uid)
-      );
-      const swipedDocs = await getDocs(swipedQuery);
-      const swipedIds = new Set(
-        swipedDocs.docs.map((doc) => doc.data().toUserId)
-      );
+      const usersList = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
 
-      // Fetch all users
-      const querySnapshot = await getDocs(query(usersCollection, limit(10)));
-      const usersList = querySnapshot.docs
-        .map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            teach: data.teach || [],
-            learn: data.learn || [],
-            hobbies: data.hobbies || [],
-            location: data.location || [0, 0],
-            age: data.birthday ? getAge(data.birthday) : null,
-            ...data,
-          };
-        })
-        .filter((user) => !swipedIds.has(user.id));
+        data.teach = data.teach || [];
+        data.learn = data.learn || [];
+        data.hobbies = data.hobbies || [];
+        data.location = data.location || [0, 0];
 
-      // Find current user
-      const currentUser = usersList.find((user) => user.userId === uid);
-      console.log(currentUser);
+        if (data.birthday) {
+          data.age = getAge(data.birthday);
+        }
+
+        return { id: doc.id, ...data };
+      });
+
+      const currentUser = usersList.find((user) => user.id === uid);
+      // console.log(currentUser);
       if (!currentUser) {
         console.error("Logged-in user not found in database.");
         setLoading(false);
         return;
       }
 
-      // Remove current user from the list and fetch recommendations
       const otherUsers = usersList.filter((user) => user.id !== currentUser.id);
+
       const recommendations = await recommendProfiles(currentUser, otherUsers);
 
-      // If fetching more users (on right swipe), append new recommendations
-      setRecommendedUsers((prevUsers) =>
-        fetchMore ? [...prevUsers, ...recommendations] : recommendations
-      );
+      setRecommendedUsers(recommendations);
     } catch (error) {
       console.error("Error fetching users:", error);
     } finally {
@@ -100,18 +82,61 @@ export default function Home() {
     }
   };
 
+  // Fetch users that haven't been swiped yet
+  const fetchNextUsers = async () => {
+    try {
+      setLoading(true);
+      const usersRef = collection(db, "users");
+
+      // Get already swiped users
+      const swipedQuery = query(
+        collection(db, "likes"),
+        where("fromUserId", "==", currentUserId)
+      );
+
+      const swipedDocs = await getDocs(swipedQuery);
+      const swipedIds = new Set([...swipedUsers]);
+      swipedDocs.forEach((doc) => swipedIds.add(doc.data().toUserId));
+
+      // Query for users not in swipedIds
+      const usersQuery = query(usersRef, limit(10));
+      const userDocs = await getDocs(usersQuery);
+
+      const newProfiles = [];
+      userDocs.forEach((doc) => {
+        const userData = doc.data();
+        if (!swipedIds.has(doc.id) && doc.id !== currentUserId) {
+          newProfiles.push({
+            id: doc.id,
+            ...userData,
+          });
+        }
+      });
+
+      // setRecommendedUsers((prevProfiles) => [...prevProfiles, ...newProfiles]);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setLoading(false);
+    }
+  };
+
+  const handleNextUser = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % recommendedUsers.length); // Cycle through recommended users
+  };
+
   const handleSwipeRight = async (cardIndex) => {
     const swipedUser = recommendedUsers[cardIndex];
-
     try {
-      // Save like in Firestore
       await addDoc(collection(db, "likes"), {
         fromUserId: user?.uid,
         toUserId: swipedUser.id,
         createdAt: Timestamp.fromDate(new Date()),
       });
 
-      // Check if there's a mutual match
+      // setSwipedUsers((prev) => new Set([...prev, swipedProfile.id]));
+
+      // match users
       const likesRef = collection(db, "likes");
       const q = query(
         likesRef,
@@ -136,11 +161,8 @@ export default function Home() {
           "You and this person liked each other!"
         );
 
-        // Fetch user details
-        const [user1Doc, user2Doc] = await Promise.all([
-          getDoc(doc(db, "users", user?.uid)),
-          getDoc(doc(db, "users", swipedUser.id)),
-        ]);
+        const user1Doc = await getDoc(doc(db, "users", user?.uid));
+        const user2Doc = await getDoc(doc(db, "users", swipedUser.id));
 
         if (user1Doc.exists() && user2Doc.exists()) {
           const username1 = user1Doc.data().name;
@@ -155,9 +177,6 @@ export default function Home() {
             sendNotification(user2Token, `You matched with ${username1}!`);
         }
       }
-
-      // Fetch and append new recommended users after swiping
-      fetchRecommendedUsers(user?.uid, true);
     } catch (error) {
       console.error("Error handling swipe:", error);
     }
@@ -274,6 +293,7 @@ export default function Home() {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.actionButton, styles.customWidth]}
+              onPress={handleNextUser}
               className="ml-8 mr-4"
             >
               <FontAwesome name="close" size={30} color="#dc2626" />
@@ -295,76 +315,57 @@ export default function Home() {
   };
 
   return (
-    <View className="flex-1 justify-center items-center w-full px-5 mt-8">
-      {recommendedUsers.length > 0 && (
-        <Swiper
-          cards={recommendedUsers}
-          renderCard={renderCard}
-          onSwipedRight={(cardIndex) => {
-            handleSwipeRight(cardIndex);
-            setRemainingSwipes((prev) => prev - 1); // Decrement swipe count
-          }}
-          onSwipedLeft={(cardIndex) => {
-            console.log(
-              "User swiped left on:",
-              recommendedUsers[cardIndex]?.name
-            );
-            setRemainingSwipes((prev) => prev - 1); // Decrement swipe count
-          }}
-          onSwipedAll={() => {
-            if (remainingSwipes <= 0) {
-              // Only fetch when all cards are swiped
-              console.log("All cards swiped! Fetching more users...");
-              fetchRecommendedUsers(user?.uid, true);
-              setRemainingSwipes(10); // Reset swipe count
-            }
-          }}
-          cardIndex={0}
-          backgroundColor="transparent"
-          stackSize={3}
-          cardVerticalMargin={1}
-          cardHorizontalMargin={10}
-          animateOverlayLabelsOpacity
-          animateCardOpacity
-          swipeBackCard
-          overlayLabels={{
-            left: {
-              title: "NOPE",
-              style: {
-                label: {
-                  backgroundColor: "red",
-                  color: "white",
-                  fontSize: 20,
-                },
-                wrapper: {
-                  flexDirection: "column",
-                  alignItems: "flex-end",
-                  justifyContent: "flex-start",
-                  marginTop: 30,
-                  marginLeft: -30,
-                },
+    <View className="flex-1 justify-center items-center w-full px-5">
+      <Swiper
+        cards={recommendedUsers}
+        renderCard={renderCard}
+        onSwipedRight={handleSwipeRight}
+        onSwipedLeft={() => {}}
+        cardIndex={0}
+        backgroundColor="transparent"
+        stackSize={3}
+        cardVerticalMargin={1}
+        cardHorizontalMargin={10}
+        animateOverlayLabelsOpacity
+        animateCardOpacity
+        swipeBackCard
+        overlayLabels={{
+          left: {
+            title: "NOPE",
+            style: {
+              label: {
+                backgroundColor: "red",
+                color: "white",
+                fontSize: 20,
+              },
+              wrapper: {
+                flexDirection: "column",
+                alignItems: "flex-end",
+                justifyContent: "flex-start",
+                marginTop: 30,
+                marginLeft: -30,
               },
             },
-            right: {
-              title: "LIKE",
-              style: {
-                label: {
-                  backgroundColor: "green",
-                  color: "white",
-                  fontSize: 20,
-                },
-                wrapper: {
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  justifyContent: "flex-start",
-                  marginTop: 30,
-                  marginLeft: 30,
-                },
+          },
+          right: {
+            title: "LIKE",
+            style: {
+              label: {
+                backgroundColor: "green",
+                color: "white",
+                fontSize: 20,
+              },
+              wrapper: {
+                flexDirection: "column",
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                marginTop: 30,
+                marginLeft: 30,
               },
             },
-          }}
-        />
-      )}
+          },
+        }}
+      />
     </View>
   );
 }

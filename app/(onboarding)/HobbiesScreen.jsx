@@ -160,7 +160,7 @@ const HobbiesScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
+  container: { flex: 1, padding: 16, backgroundColor: "#fff", paddingTop: 45, },
   scrollContainer: { paddingBottom: 20 },
   title: {
     fontSize: 25,
