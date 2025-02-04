@@ -1,68 +1,106 @@
 import React, { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View, Alert, Image, StyleSheet } from "react-native";
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Alert,
+  Image,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import { useRouter } from "expo-router";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "../../firebaseConfig"; // Import your Firebase config
+import { useAuth } from "@/context/authContext";
+import CustomKeyboardView from "@/components/CustomKeyboardView";
 
 export default function LogInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const auth = getAuth(app);
+  const { loginUser, user } = useAuth();
 
+  // const handleSignIn = async () => {
+  //   if (!email || !password) {
+  //     Alert.alert("Error", "Please fill in all fields.");
+  //     return;
+  //   }
+  //   try {
+  //     await signInWithEmailAndPassword(auth, email, password);
+  //     Alert.alert("Success", "Logged in successfully!");
+  //     router.push("/(tabs)/Home"); // Navigate to LearnScreen
+  //   } catch (error) {
+  //     Alert.alert("Error", error.message);
+  //   }
+  // };
   const handleSignIn = async () => {
     if (!email || !password) {
-      Alert.alert("Error", "Please fill in all fields.");
+      Alert.alert("Login", "Please fill all the fields.");
       return;
     }
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      Alert.alert("Success", "Logged in successfully!");
-      router.push("/(onboarding)/ProfileSetup"); // Navigate to LearnScreen
-    } catch (error) {
-      Alert.alert("Error", error.message);
+
+    setLoading(true);
+    const response = await loginUser(email, password);
+    setLoading(false);
+    if (!response.success) {
+      Alert.alert("Login Failed", response.msg);
+    } else {
+      router.push("/(onboarding)/ProfileSetup");
     }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image source={require("../../assets/logo.png")} style={styles.logo} />
-        <Text style={styles.title}>SwapWise</Text>
-      </View>
+    <CustomKeyboardView className="flex-1">
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../../assets/logo.png")}
+            style={styles.logo}
+          />
+          <Text style={styles.title}>SwapWise</Text>
+        </View>
 
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#8A8A8A"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#8A8A8A"
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry
-        />
-        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-          <Text style={styles.buttonText}>Log In</Text>
-        </TouchableOpacity>
-        <Text style={styles.footerText}>
-          Don't have an account?{" "}
-          <Text
-            style={styles.footerLink}
-            onPress={() => router.push("/(auth)/SignUp")}
+        <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#8A8A8A"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#8A8A8A"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry
+          />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSignIn}
+            disabled={loading ? true : false}
           >
-            Sign Up
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Log In</Text>
+            )}
+          </TouchableOpacity>
+          <Text style={styles.footerText}>
+            Don't have an account?{" "}
+            <Text
+              style={styles.footerLink}
+              onPress={() => router.push("/(auth)/SignUp")}
+            >
+              Sign Up
+            </Text>
           </Text>
-        </Text>
+        </View>
       </View>
-    </View>
+    </CustomKeyboardView>
   );
 }
 
