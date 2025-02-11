@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useRouter, Slot, useSegments } from "expo-router";
 import { FontAwesome, Entypo, Ionicons } from "@expo/vector-icons";
-import HomeHeader from "@/components/HomeHeader";
+import HomeHeader from "../../components/HomeHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Layout() {
@@ -10,20 +10,22 @@ export default function Layout() {
   const segments = useSegments();
 
   // Function to determine the active tab for styling
-  const isActive = (route) => segments[1] === route;
+  const isActive = (route) => segments.includes(route);
 
   return (
     <View style={styles.container}>
       {/* Main Content */}
-      <SafeAreaView className="flex-1 bg-white">
-        {/* header */}
+      <SafeAreaView style={styles.safeArea}>
+        {/* Header */}
         <HomeHeader />
-        {/* Content  */}
+
+        {/* Content */}
         <View style={styles.content}>
           <Slot />
         </View>
       </SafeAreaView>
-      {/* Custom Tab Bar */}
+
+      {/* Custom Tab Bar - Fixed at Bottom */}
       <View style={styles.tabBar}>
         <TouchableOpacity
           style={styles.tabButton}
@@ -41,6 +43,20 @@ export default function Layout() {
 
         <TouchableOpacity
           style={styles.tabButton}
+          onPress={() => router.push("/(tabs)/Discover")}
+        >
+          <Ionicons
+            name="compass-outline"
+            size={24}
+            color={isActive("Discover") ? "#1E1E84" : "#888"}
+          />
+          <Text style={[styles.tabText, isActive("Discover") && styles.activeTab]}>
+            Browse
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.tabButton}
           onPress={() => router.push("/(tabs)/Calendar")}
         >
           <Entypo
@@ -48,9 +64,7 @@ export default function Layout() {
             size={24}
             color={isActive("Calendar") ? "#1E1E84" : "#888"}
           />
-          <Text
-            style={[styles.tabText, isActive("Calendar") && styles.activeTab]}
-          >
+          <Text style={[styles.tabText, isActive("Calendar") && styles.activeTab]}>
             Calendar
           </Text>
         </TouchableOpacity>
@@ -64,43 +78,43 @@ export default function Layout() {
             size={24}
             color={isActive("ContactList") ? "#1E1E84" : "#888"}
           />
-          <Text
-            style={[
-              styles.tabText,
-              isActive("ContactList") && styles.activeTab,
-            ]}
-          >
+          <Text style={[styles.tabText, isActive("ContactList") && styles.activeTab]}>
             Messages
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.tabButton}
-          onPress={() => router.push("/(tabs)/Profile")}
-        >
-          <Ionicons
-            name="person-outline"
-            size={24}
-            color={isActive("Profile") ? "#1E1E84" : "#888"}
-          />
-          <Text
-            style={[styles.tabText, isActive("Profile") && styles.activeTab]}
-          >
-            Profile
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
+                  style={styles.tabButton}
+                  onPress={() => router.push("/(tabs)/Profile")}
+                >
+                  <Ionicons
+                    name="person-outline"
+                    size={24}
+                    color={isActive("Profile") ? "#1E1E84" : "#888"}
+                  />
+                  <Text
+                    style={[styles.tabText, isActive("Profile") && styles.activeTab]}
+                  >
+                    Profile
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          );
+        }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
   content: {
     flex: 1,
+    // Prevents overlap with tab bar
   },
   tabBar: {
     flexDirection: "row",
@@ -109,6 +123,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderTopWidth: 1,
     borderColor: "#E0E0E0",
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
   },
   tabButton: {
     alignItems: "center",
