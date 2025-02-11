@@ -61,7 +61,7 @@ export default function ContactItem({ item, router, currentUser }) {
   return (
     <TouchableOpacity
       onPress={() => handleChatStart(item)}
-      className={`flex-row justify-between mx-4 items-center gap-3 mb-4 pb-2 border-b border-b-neutral-200`}
+      className={`flex-row justify-between mx-4 items-center mb-4 pb-2 border-b border-b-neutral-200`}
     >
       <Image
         style={{ height: 65, width: 65, borderRadius: 100 }}
@@ -74,7 +74,7 @@ export default function ContactItem({ item, router, currentUser }) {
         transition={500}
       />
       {/* name & message */}
-      <View className="flex-1 gap-1">
+      <View className="flex-1 gap-1.5">
         <View className="flex-row justify-between">
           <Text
             style={{ fontSize: 16 }}

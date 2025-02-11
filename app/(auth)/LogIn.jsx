@@ -45,7 +45,7 @@ export default function LogInPage() {
     if (!response.success) {
       Alert.alert("Login Failed", response.msg);
     } else {
-      router.push("/(onboarding)/ProfileSetup");
+      router.push("/(tabs)/Home");
     }
   };
 

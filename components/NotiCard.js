@@ -2,16 +2,23 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { Image } from "expo-image";
 import { blurhash } from "@/utils/common";
+import { useRouter } from "expo-router";
 
 export default function NotiCard({ title, match }) {
+  const router = useRouter();
+
+  const goChatRooom = () => {
+    router.push({
+      pathname: "/ChatRoom",
+      params: { userId: match?.user2, userName: match?.swipedUsername },
+    });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.textContainer}>
-          <Text style={{ fontWeight: "bold", marginHorizontal: 5 }}>
-            You
-          </Text>
+          <Text style={{ fontWeight: "bold", marginHorizontal: 5 }}>You</Text>
           <Text style={{ color: "#4b5563", fontWeight: "500" }}>and</Text>
           <Text style={{ fontWeight: "bold", marginHorizontal: 5 }}>
             {match?.swipedUsername}
@@ -20,7 +27,7 @@ export default function NotiCard({ title, match }) {
             matched. Start Chat!
           </Text>
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={goChatRooom}>
           <Text style={{ color: "#ffffff" }}>Message</Text>
         </TouchableOpacity>
       </View>
