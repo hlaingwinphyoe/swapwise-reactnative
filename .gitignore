@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules/
+project-directory/
 
 # Expo
 .expo/
