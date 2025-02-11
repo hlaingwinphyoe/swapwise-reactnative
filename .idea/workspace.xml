@@ -4,19 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d7bb9d0-aa60-4e27-9b06-a6e22b45eabe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/(recommendation)/ContentBased.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/(recommendation)/Recommendation.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/(recommendation)/Scoring.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(onboarding)/HobbiesScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(onboarding)/HobbiesScreen.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(onboarding)/LearnScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(onboarding)/LearnScreen.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(onboarding)/ProfileSetup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(onboarding)/ProfileSetup.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(onboarding)/TeachScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(onboarding)/TeachScreen.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-    </list>
+    <list default="true" id="5d7bb9d0-aa60-4e27-9b06-a6e22b45eabe" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,9 +33,9 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "git-widget-placeholder": "Merging main",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/HP/Documents/SwapWise/assets"
+    "last_opened_file_path": "C:/Users/HP/Downloads/SwapWise"
   }
 }]]></component>
   <component name="RecentsManager">

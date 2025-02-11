@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import { View, FlatList, ActivityIndicator } from "react-native";
+import { View, FlatList, ActivityIndicator, Text } from "react-native";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import ContactItem from "@/components/ContactItem";
@@ -87,7 +87,7 @@ export default function Chat() {
         />
       ) : (
         <View className="flex items-center mt-72">
-          No Match Users.
+          <Text>No Match Users.</Text>
         </View>
       )}
     </View>
