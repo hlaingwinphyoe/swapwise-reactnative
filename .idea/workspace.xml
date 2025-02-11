@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d7bb9d0-aa60-4e27-9b06-a6e22b45eabe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(page)/Notifications.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(page)/Notifications.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/ContactList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/ContactList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/Discover.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/Discover.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/HomeNew.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/HomeNew.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/HomeOld.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/HomeOld.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ChatRoomHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatRoomHeader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ContactItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/ContactItem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/NotiCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/NotiCard.js" afterDir="false" />
-    </list>
+    <list default="true" id="5d7bb9d0-aa60-4e27-9b06-a6e22b45eabe" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,7 +33,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "git-widget-placeholder": "Merging main",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/HP/Downloads/SwapWise"
   }
