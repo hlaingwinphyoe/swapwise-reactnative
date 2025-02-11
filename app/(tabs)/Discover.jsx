@@ -12,6 +12,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/context/authContext";
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -19,6 +20,7 @@ import {
   limit,
   query,
   Timestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { getAge } from "@/utils/common";
@@ -119,18 +121,27 @@ export default function Discover() {
           where("fromUserId", "==", swipedUser.id),
           where("toUserId", "==", user?.uid)
         );
-
         const mutualDocs = await getDocs(mutualQuery);
 
         if (!mutualDocs.empty) {
-          // It's a match!
-          await addDoc(collection(db, "matches"), {
-            user1: user?.uid,
-            user2: swipedUser.id,
-            createdAt: Timestamp.fromDate(new Date()),
-            swipedUsername: swipedUser.username,
-            swipedUserProfile: swipedUser.profilePicture,
-          });
+          // It's a match! Store match info inside users collection
+          const userRef = doc(db, "users", user?.uid);
+          const swipedUserRef = doc(db, "users", swipedUser.id);
+
+          await Promise.all([
+            updateDoc(userRef, {
+              matches: arrayUnion({
+                userId: swipedUser.id,
+                matchedAt: Timestamp.fromDate(new Date()),
+              }),
+            }),
+            updateDoc(swipedUserRef, {
+              matches: arrayUnion({
+                userId: user?.uid,
+                matchedAt: Timestamp.fromDate(new Date()),
+              }),
+            }),
+          ]);
 
           Alert.alert(
             "It's a Match! 🎉",
@@ -139,8 +150,8 @@ export default function Discover() {
 
           // Handle match notifications
           const [user1Doc, user2Doc] = await Promise.all([
-            getDoc(doc(db, "users", user?.uid)),
-            getDoc(doc(db, "users", swipedUser.id)),
+            getDoc(userRef),
+            getDoc(swipedUserRef),
           ]);
 
           if (user1Doc.exists() && user2Doc.exists()) {
@@ -206,8 +217,8 @@ export default function Discover() {
             className="w-full h-[300px] rounded-tl-3xl rounded-tr-3xl"
             style={{ height: CARD_HEIGHT * 0.45 }}
           />
-          <View className="h-20 bg-black absolute bottom-0 w-full opacity-50" />
-          <View className="absolute bottom-3 left-3 w-full">
+          <View className="h-20 bg-black absolute bottom-3 w-full opacity-50" />
+          <View className="absolute bottom-5 left-3 w-full">
             <Text className="text-white text-2xl font-bold mb-1">
               {user.name} ({user.age || "N/A"})
             </Text>
@@ -219,7 +230,7 @@ export default function Discover() {
             </View>
           </View>
         </View>
-        <View className="p-5 flex-1">
+        <View className="relative p-5 flex-1 overflow-hidden">
           <View className="flex-row items-start mb-5">
             <Text className="font-semibold mr-2">Speciality:</Text>
             <View className="flex-row flex-wrap gap-1.5">
@@ -250,7 +261,7 @@ export default function Discover() {
             <Text className="font-semibold mr-2">University:</Text>
             <Text>{user?.university}</Text>
           </View>
-          <View className="flex-row items-end justify-center">
+          <View className="absolute bottom-10 left-12 flex-row items-end justify-center">
             <TouchableOpacity style={[styles.actionButton, styles.normalWidth]}>
               <FontAwesome name="refresh" size={16} color="#6b7280" />
             </TouchableOpacity>
@@ -325,7 +336,7 @@ export default function Discover() {
               label: {
                 backgroundColor: "red",
                 color: "white",
-                fontSize: 20,
+                fontSize: 17,
               },
               wrapper: {
                 flexDirection: "column",
@@ -342,7 +353,7 @@ export default function Discover() {
               label: {
                 backgroundColor: "green",
                 color: "white",
-                fontSize: 20,
+                fontSize: 17,
               },
               wrapper: {
                 flexDirection: "column",

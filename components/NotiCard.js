@@ -1,18 +1,52 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
+import React, { useState, useEffect } from "react";
 import { Image } from "expo-image";
 import { blurhash } from "@/utils/common";
 import { useRouter } from "expo-router";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 
 export default function NotiCard({ title, match }) {
   const router = useRouter();
+  const [matchUser, setMatchUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const goChatRooom = () => {
+  useEffect(() => {
+    const fetchMatchUser = async () => {
+      if (match?.userId) {
+        try {
+          const matchUserRef = doc(db, "users", match.userId);
+          const matchUserDoc = await getDoc(matchUserRef);
+          if (matchUserDoc.exists()) {
+            setMatchUser(matchUserDoc.data());
+          }
+        } catch (error) {
+          console.error("Error fetching match user:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    fetchMatchUser();
+  }, [match?.userId]);
+
+  const goChatRoom = () => {
     router.push({
       pathname: "/ChatRoom",
-      params: { userId: match?.user2, userName: match?.swipedUsername },
+      params: { userId: match?.userId, userName: matchUser?.name },
     });
   };
+
+  if (loading) {
+    return <ActivityIndicator size="small" color="#0000ff" />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
@@ -21,20 +55,20 @@ export default function NotiCard({ title, match }) {
           <Text style={{ fontWeight: "bold", marginHorizontal: 5 }}>You</Text>
           <Text style={{ color: "#4b5563", fontWeight: "500" }}>and</Text>
           <Text style={{ fontWeight: "bold", marginHorizontal: 5 }}>
-            {match?.swipedUsername}
+            {matchUser?.username || "Someone"}
           </Text>
           <Text style={{ color: "#4b5563", fontWeight: "500" }}>
             matched. Start Chat!
           </Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={goChatRooom}>
+        <TouchableOpacity style={styles.button} onPress={goChatRoom}>
           <Text style={{ color: "#ffffff" }}>Message</Text>
         </TouchableOpacity>
       </View>
       <Image
         source={{
           uri:
-            match?.swipedUserProfile ||
+            matchUser?.profileImage ||
             "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=800",
         }}
         placeholder={blurhash}
@@ -57,6 +91,7 @@ const styles = StyleSheet.create({
   leftContainer: {},
   textContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
   },
   title: {
     fontSize: 20,
