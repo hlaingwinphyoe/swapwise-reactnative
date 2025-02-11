@@ -71,15 +71,6 @@ export default function Notifications() {
             )}
           />
         ) : (
-          // <FlatList
-          //   data={matches}
-          //   // contentContainerStyle={{ flex: 1, paddingVertical: 25 }}
-          //   // showsVerticalScrollIndicator={false}
-          //   keyExtractor={(match) => match.id}
-          //   renderItem={({ match, index }) => (
-          //     <NotiCard match={match} index={index} title="Congratulations" />
-          //   )}
-          // />
           <View className="flex-row justify-center items-center h-[75vh] gap-4">
             <FontAwesome name="bell-slash" size={25} />
             <Text className="text-xl">{noNoti}</Text>
